@@ -1,0 +1,19 @@
+{
+  "extends": "./../../tsconfig",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "../../dist/tmp",
+    "paths": {
+      "@components/*": ["components/*"],
+      "@config/*": ["config/*"],
+      "@containers/*": ["containers/*"],
+      "@helpers/": ["helpers/*"],
+      "@layouts/*": ["layouts/*"],
+      "@plugins": ["../plugins"],
+      "@plugins/*": ["../plugins/*"],
+      "@store": ["store"],
+      "@store/*": ["store/*"],
+      "@router": ["router"]
+    }
+  }
+}
