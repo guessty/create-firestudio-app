@@ -1,5 +1,5 @@
 // All functions will recieve an express(like) request and response
-// and can be called from the app using the path '/functions/<functionName>'
+// and can be called from the app using the path '/api/functions/<functionName>'
 
 export const customFunction = (request, response) => {
   /* tslint:disable-next-line */

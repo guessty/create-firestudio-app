@@ -16,7 +16,6 @@
     "baseUrl": ".",
     "typeRoots": [
       "./node_modules/@types",
-      "./src/plugins"
     ],
     "lib": ["dom", "es6"]
   },

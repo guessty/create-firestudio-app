@@ -9,11 +9,8 @@
       "@containers/*": ["containers/*"],
       "@helpers/": ["helpers/*"],
       "@layouts/*": ["layouts/*"],
-      "@plugins": ["../plugins"],
-      "@plugins/*": ["../plugins/*"],
       "@store": ["store"],
-      "@store/*": ["store/*"],
-      "@router": ["router"]
+      "@store/*": ["store/*"]
     }
   }
 }

@@ -10,16 +10,13 @@
       },
       "useBuiltIns": "usage"
     }],
-    "@babel/preset-react",
-    ["@babel/preset-typescript", {
-      "isTSX": true,
-      "allExtensions": true
-    }]
+    "next/babel",
+    "@zeit/next-typescript/babel"
   ],
   "plugins": [
+    ["styled-components", { "ssr": true, "displayName": true }],
     "@babel/plugin-proposal-class-properties",
     "@babel/plugin-syntax-dynamic-import",
-    ["styled-components", { "ssr": true, "displayName": true, "preprocess": false }],
     ["inline-import", { "extensions": [".css", ".scss"] }],
     [ "module-resolver", {
       "root": ["./"],
@@ -29,9 +26,7 @@
         "@containers": "./src/app/containers",
         "@helpers": "./src/app/helpers",
         "@layouts": "./src/app/layouts",
-        "@store": "./src/app/store",
-        "@plugins": "./src/plugins",
-        "@router": "./src/app/router"
+        "@store": "./src/app/store"
       }
     }]
   ]

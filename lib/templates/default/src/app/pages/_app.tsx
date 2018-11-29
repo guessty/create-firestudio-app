@@ -1,33 +1,16 @@
-import { withRedux } from 'firestudio'
-import App, { Container } from 'firestudio/app'
+import App, { Container } from 'next/app'
+import Head from 'next/head'
+import { withSPARouter } from 'next-spa/router'
 import * as React from 'react'
-import { Provider } from 'react-redux'
-import styledSanitize from 'styled-sanitize'
-import styled, { injectGlobal } from 'styled-components'
 //
-import initStore from '@store'
-import Toastr from '@components/Toastr'
-import * as Router from '@router'
+import AppLayout from '@layouts/App'
+import Loader from '@components/Loader'
+import * as Store from '@store'
+import { Provider } from '@store/store'
+// import Toastr from '@components/Toastr'
 //
-
-injectGlobal`
-  ${styledSanitize}
-  html {
-    font-size: 62.5%;
-    overflow-x: hidden;
-    font-family: 'Quicksand', sans-serif;
-  }
-  body {
-    font-size: 1.4rem;
-  }
-  *, :before, :after, h1, h2, h3, h4, h5, h6, hr, p, ul, ol, dl {
-    margin: 0;
-  }
-  hr {
-    border: 0;
-    border-bottom: 1px solid lightgrey;
-  }
-`
+require('sanitize.css');
+require('./../styles.css')
 
 interface IFirestudioAppProps {
   store: any
@@ -36,48 +19,42 @@ interface IFirestudioAppProps {
   Component: React.Component
 }
 
-const RenderType = styled.span`
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 100;
-    font-weight: bold;
-    font-size: 16px;
-    color: 'darkslategrey';
-    border: 2px solid currentColor;
-    border-radius: 24px;
-    background: white;
-    padding: 8px;
-    opacity: 0.5;
-    pointer-events: none;
-  `
 
 class FirestudioApp extends App<IFirestudioAppProps> {
-  static async getInitialProps(props) {
-    const {Component, ctx} = props
-    return {
-      pageProps: (Component.getInitialProps ? await Component.getInitialProps(ctx) : {}),
-      pathname: ctx.pathname,
+  static async getInitialProps({ Component, ctx }) {
+    let pageProps = {}
+
+    if (Component.getInitialProps) {
+      pageProps = await Component.getInitialProps(ctx)
     }
+
+    const propsToReturn = {
+      pageProps: {
+        PageLoader: Loader,
+        ...pageProps,
+      },
+    }
+
+    return propsToReturn
   }
+
   render() {
-    const { Component, pageProps, store, pathname, router } = (this as any).props
-    const isPrerendered = Router.staticRoutes[pathname]
+    const { Component, pageProps } = (this as any).props
 
     return (
       <Container>
-        <Provider store={store}>
-          <div>
-            <RenderType>
-              {isPrerendered ? 'Pre-rendered Page' : 'Cloud Rendered Page'}
-            </RenderType>
-            <Toastr />
-            <Component {...pageProps} router={router} />
-          </div>
+        <Head>
+          <title>Firestudio</title>
+        </Head>
+        <Provider store={Store}>
+          <AppLayout>
+            {/* <Toastr /> */}
+            <Component {...pageProps} />
+          </AppLayout>
         </Provider>
       </Container>
     )
   }
 }
 
-export default withRedux(initStore)(FirestudioApp)
+export default withSPARouter(FirestudioApp)

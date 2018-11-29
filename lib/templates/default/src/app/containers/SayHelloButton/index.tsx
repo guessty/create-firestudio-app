@@ -1,31 +1,32 @@
 import * as React from 'react'
-import { toastr } from 'react-redux-toastr'
-import { connect } from 'react-redux'
 //
-import { api } from '@store/actions'
 import { CUSTOM_FUNCTION_API } from '@config/apiRoutes'
+import { Api } from '@store'
+import { subscribe } from '@store/store'
 //
 
 interface ISayHelloButtonProps {
-  request(requestConfig: object, takeResponse?: string): Promise<{data: string}>
+  api: {
+    request(requestConfig: object, key?: string, take?: string): Promise<{data: string}>,
+  }
 }
-
-const mapDisptachToProps = dispatch => ({
-  request: (requestConfig, takeResponse) => dispatch(api.request(requestConfig, takeResponse)),
-})
 
 class SayHelloButton extends React.Component<ISayHelloButtonProps> {
   handleClick = () => {
-    const { request } = this.props
+    const { api: { request } } = this.props
     request({
       method: 'get',
       url: CUSTOM_FUNCTION_API,
-    }, 'last')
+    }, 'say-hello', 'last')
       .then(response => {
-        toastr.light('Firebot', response.data, {
-          icon: (<img src="/static/firestudio-logo.png" alt="logo" width={40} />),
-          status: 'warning',
-        })
+        if (response) {
+          /* tslint:disable-next-line */
+          console.log(response.data)
+        }
+        // toastr.light('Firebot', response.data, {
+        //   icon: (<img src="/static/next-spa-logo.png" alt="logo" width={40} />),
+        //   status: 'warning',
+        // })
       })
   }
   render() {
@@ -35,4 +36,4 @@ class SayHelloButton extends React.Component<ISayHelloButtonProps> {
   }
 }
 
-export default connect(null, mapDisptachToProps)(SayHelloButton)
+export default subscribe({ api: Api })(SayHelloButton)
